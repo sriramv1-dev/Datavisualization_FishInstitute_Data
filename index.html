@@ -1,0 +1,216 @@
+<html>
+    <!-- Team: Ajay Kumar L, Sriram V, Arun Vaibhav k -->
+    <head>
+        <title>
+        Visualization of Fish Institute data using d3.js
+        </title>
+        <script src="http://d3js.org/d3.v4.min.js"></script>
+  <script type="text/javascript" src="http://dimplejs.org/dist/dimple.v2.3.0.min.js"></script>
+        <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+        <style>
+            h2 {
+                color:red;
+            }
+        </style>
+       </head>
+    
+    <!-- Area plot for Medium/Date vs MediumCount -->
+    
+    <div id="row" style="padding-top:50px;padding-left:30px; float:left;">
+
+    <table><tr><td><h2>Area plot for Medium/Date vs Medium Count</h2></td></tr></table>
+    <script type="text/javascript">
+    var svg = dimple.newSvg("#row", 590, 400);
+        var dataArray = [];
+    d3.csv("/data/Log.csv", function (data) {
+      data.forEach(function(e) {
+            e.count = 1;
+            e.Date1 = (new Date(e.TimeStamp).getMonth() + 1) + '/' + (new Date(e.TimeStamp).getDate()) + '/' +  new Date(e.TimeStamp).getFullYear();
+        })
+        dataArray = data;
+      var myChart = new dimple.chart(svg, data);
+      myChart.setBounds(90, 30, 470, 330)
+      myChart.addMeasureAxis("y", "count");
+      var y = myChart.addCategoryAxis("x", ["Medium", "Date1"]);
+      y.addGroupOrderRule("Date");
+      var s = myChart.addSeries("Medium", dimple.plot.area);
+      s.lineWeight = 1;
+      s.barGap = 0.05;
+      myChart.draw();
+    });
+  </script>
+    <p><i>(a).It can be inferred from the above Area chart that Number of Readings are <br/>
+        more in number compared to videos</i></p>
+</div>
+    <br/>
+    <br/>
+    
+    <!-- Ring Chart for Type Distribution -->
+    <div id="row1" style="padding-left:30px;float:left;">
+        <h2>Ring Chart for Type Distribution</h2>
+        <table>
+            <tr>
+              <td>
+        <b>Enter a date before Between 04/02/2017 - 04/19/2017:</b><br>
+              </td> 
+            </tr>
+            <tr>
+                <td>
+        <input type="date" id="Date" min="2017-04-02" max="2017-04-19"><br><br>
+                </td>
+            </tr>
+        </table>
+            
+    <script type="text/javascript">
+    var svg1 = dimple.newSvg("#row1", 590, 400);
+        
+       
+        
+    d3.csv("/data/Log.csv", function (data) {
+       data = dataArray;
+        dataArrayNew = dimple.filterData(dataArray, "Type", ["Tips","Guide","Links","Template","List"]);
+        
+      var myChart = new dimple.chart(svg1, dataArrayNew);
+      myChart.setBounds(75, 20, 460, 360)
+      
+        myChart.addMeasureAxis("p", "count");
+      var ring = myChart.addSeries("Type", dimple.plot.pie);
+      ring.innerRadius = "50%";
+        
+      myChart.addLegend(500, 20, 90, 300, "left");
+        
+      myChart.draw();
+        
+    d3.select('#Date')
+			.on("change", function () {
+        var filterValues = [];
+        var date = new Date(document.getElementById("Date").value);
+        var dateModified = (date.getMonth() + 1) + '/' + (date.getDate()+1) + '/' +  date.getFullYear();
+        filterValues.push(dateModified);
+        
+        myChart.data = dimple.filterData(dataArrayNew, "Date1", filterValues);
+            
+        
+        myChart.draw(800);  
+          });
+    });
+           </script>
+
+    <p><i>(b).Use data selector to see distribution of different types over the given time span</i></p>
+    </div> 
+    <br/>
+    <br/>
+    
+    <!-- Interactive Bubble Chart for  Medium vs Date which changes based on selected scap values -->
+    <div id="row2" style="padding-left:30px;float:left;">
+    
+        <h2>Interactive Bubble Chart for  Medium vs Date</h2>
+        <table><tr><td><b>Select SCAP:&nbsp;</b><select id="drop">
+         <option selected value="All">Select An Option</option>
+        <option value="Cultural">Cultural</option>
+        <option value="Professional">Professional</option>
+            <option value="Academic">Academic</option>
+            <option value="Social">Social</option>
+            <option value="">Unknown</option>
+        </select></td></tr></table>
+        
+    <script type="text/javascript">
+    var svg2 = dimple.newSvg("#row2", 590, 400);
+    d3.csv("/data/Log.csv", function (data) {
+        //d3.csv("Github_Projects/Datavisualization_FishInstitute_Data/data/Log.csv", function (data) {
+        data = dataArray;
+      var myChart = new dimple.chart(svg2, data);
+        
+        
+      myChart.setBounds(90, 35, 480, 325)
+      myChart.addMeasureAxis("x", "count");
+      myChart.addCategoryAxis("y", "Date1");
+      myChart.addSeries("Medium", dimple.plot.bubble);
+      myChart.addLegend(240, 10, 330, 20, "right");
+      myChart.draw();
+        d3.select('#drop')
+        .on("change", function() {
+            var filters = [];
+            var value = document.getElementById("drop").value;
+            if(value != "All") {
+                filters.push(value);
+                if(value == "Professional")
+                    {filters.push("Professional ");}
+                myChart.data = dimple.filterData(data, "SCAP", filters);
+                myChart.draw(1000);
+            }
+             else {
+                 myChart.data = dataArray;
+                 myChart.draw(1000);
+             }
+                                            
+        });
+    });
+  </script>
+        <p><i>(c).It can be inferred by selecting SCAP for Medium=Video, there aren't any scaps.</i></p>
+    </div>
+    
+    <br/>
+    <br/>
+    
+    <!-- Bar chart depicting SCAP Count for each Type value-->
+        <div id="row3" style="padding-left:30px;float:left;">
+        
+            <h2>Bar chart depicting SCAP Count for each Type</h2>
+  <script type="text/javascript">
+    var svg3 = dimple.newSvg("#row3", 590, 400);
+    d3.csv("/data/Log.csv", function (data) {
+        data = dataArray;
+      var myChart = new dimple.chart(svg3, data);
+        filterV = ["Guide","Tips","Links","List","Template"];
+        
+      myChart.setBounds(60, 30, 510, 305);
+      var x = myChart.addCategoryAxis("x", ["Type", "SCAP"]);
+      myChart.addMeasureAxis("y", "count");
+      myChart.addSeries("SCAP", dimple.plot.bar);
+     myChart.addLegend(65, 10, 510, 20, "right");
+        myChart.data = dimple.filterData(data, "Type", filterV);
+      myChart.draw();
+    });
+  </script>
+    <p><i>(d).Only the Type "Tips" has all SCAP values</i></p>
+            
+</div>
+    <br/>
+    <br/>
+    
+    <!-- Dynamic Line Color plot for count of resources by Date -->
+    <div id="row5"  style="padding-left:30px;float:left;">
+        <h2>Dynamic Line Color plot for count of resources by Date</h2>
+    <script type="text/javascript">
+    var svg5 = dimple.newSvg("#row5", 590, 400);
+    d3.csv("/data/Log.csv", function (data) {
+        
+        data = dataArray;
+        
+      // Create and Position a Chart
+      var myChart = new dimple.chart(svg5, data);
+      myChart.setBounds(60, 30, 500, 300);
+      var x = myChart.addCategoryAxis("x", "Date1")
+      myChart.addMeasureAxis("y", "count");
+
+      // Order the x axis by date
+      x.addOrderRule("Date");
+
+      // Min price will be green, middle price yellow and max red
+      myChart.addColorAxis("count", ["Red", "yellow","green"]);
+
+      // Add a thick line with markers
+      var lines = myChart.addSeries("Resources", dimple.plot.line);
+      lines.lineWeight = 5;
+      lines.lineMarkers = true;
+
+      // Draw the chart
+      myChart.draw();
+    });
+        </script>
+        <p><i>(e).Sudden drop of resources at the end of the given period (04/19/2017)</i></p>
+    </div>
+    
+
+</html>

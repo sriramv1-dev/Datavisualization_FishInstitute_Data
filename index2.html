@@ -1,0 +1,118 @@
+<html>
+    <!-- Team: Ajay Kumar L, Sriram V, Arun Vaibhav k -->
+    <head>
+        <title>
+        Visualization of Fish Institute data using d3.js
+        </title>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+        <style>
+            h2 {
+                color:red;
+            }
+            .tile{
+                display:inline-block;
+            }
+            .container{
+                text-align: center;
+                width:70%;
+                -webkit-box-shadow: 2px 2px 26px 0px rgba(0,0,0,0.75);
+                -moz-box-shadow: 2px 2px 26px 0px rgba(0,0,0,0.75);
+                box-shadow: 2px 2px 26px 0px rgba(0,0,0,0.75);
+            }
+            header,footer{
+                background-color: #F4F3F3;
+                padding:20px;
+            }
+        </style>
+       </head>
+    <body>
+
+    <div class="container">
+        <header>
+            <img src="page-1.png" height="21" width="160"/></header>
+    <!-- Area plot for Medium/Date vs MediumCount -->
+    
+    <div id="row" class="tile">
+
+    <table><tr><td><h2>Area plot for Medium/Date vs Medium Count</h2></td></tr></table>
+
+    <p><i>(a).It can be inferred from the above Area chart that Number of Readings are <br/>
+        more in number compared to videos</i></p>
+</div>
+    <br/>
+    <br/>
+    
+    <!-- Ring Chart for Type Distribution -->
+    <div id="row1" class="tile">
+        <h2>Ring Chart for Type Distribution</h2>
+        <table>
+            <tr>
+              <td>
+        <b>Enter a date before Between 04/02/2017 - 04/19/2017:</b><br>
+              </td> 
+            </tr>
+            <tr>
+                <td>
+        <input type="date" id="Date" min="2017-04-02" max="2017-04-19"><br><br>
+                </td>
+            </tr>
+        </table>
+            
+
+
+    <p><i>(b).Use data selector to see distribution of different types over the given time span</i></p>
+    </div> 
+    <br/>
+    <br/>
+    
+    <!-- Interactive Bubble Chart for  Medium vs Date which changes based on selected scap values -->
+    <div id="row2" class="tile">
+    
+        <h2>Interactive Bubble Chart for  Medium vs Date</h2>
+        <table><tr><td><b>Select SCAP:&nbsp;</b><select id="drop">
+         <option selected value="All">Select An Option</option>
+        <option value="Cultural">Cultural</option>
+        <option value="Professional">Professional</option>
+            <option value="Academic">Academic</option>
+            <option value="Social">Social</option>
+            <option value="">Unknown</option>
+        </select></td></tr></table>
+        
+
+        <p><i>(c).It can be inferred by selecting SCAP for Medium=Video, there aren't any scaps.</i></p>
+    </div>
+    
+    <br/>
+    <br/>
+    
+    <!-- Bar chart depicting SCAP Count for each Type value-->
+        <div id="row3" class="tile">
+        
+            <h2>Bar chart depicting SCAP Count for each Type</h2>
+
+    <p><i>(d).Only the Type "Tips" has all SCAP values</i></p>
+            
+</div>
+    <br/>
+    <br/>
+    
+    <!-- Dynamic Line Color plot for count of resources by Date -->
+    <div id="row5" class="tile">
+        <h2>Dynamic Line Color plot for count of resources by Date</h2>
+
+        <p><i>(e).Sudden drop of resources at the end of the given period (04/19/2017)</i></p>
+    </div>
+        <footer>
+            <p>	&copy; Copyright Protected, Sriram Voonna, Ajay Kumar Lanki, Arun Vaibhav Konakanchi 2017</p>
+        </footer>
+    </div>
+
+    <script src="http://d3js.org/d3.v4.min.js"></script>
+    <script type="text/javascript" src="dimple.v2.3.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="index.js"></script>
+    </body>
+
+</html>
